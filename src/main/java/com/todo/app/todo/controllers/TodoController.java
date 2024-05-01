@@ -2,6 +2,7 @@ package com.todo.app.todo.controllers;
 
 import com.todo.app.todo.dto.TodoDto;
 import com.todo.app.todo.dto.TodoResponse;
+import com.todo.app.todo.dto.UpdatedTodoDto;
 import com.todo.app.todo.entities.Todo;
 import com.todo.app.todo.service.TodoService;
 import com.todo.app.user.entity.User;
@@ -32,6 +33,13 @@ public class TodoController {
         TodoResponse response = todoService.save(todo);
         System.out.println(response);
         return ResponseEntity.ok(response);
+    }
+    @PatchMapping("/{todoId}")
+    public ResponseEntity<TodoResponse> update(@PathVariable("todoId") Long todoId,  @RequestBody UpdatedTodoDto dto){
+        dto.setId(todoId);
+        System.out.println(modelMapper.map(dto, Todo.class));
+        System.out.println(dto);
+    return ResponseEntity.ok(todoService.update(modelMapper.map(dto, Todo.class)));
     }
 
 }

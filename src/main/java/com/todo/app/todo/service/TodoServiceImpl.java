@@ -23,7 +23,7 @@ public class TodoServiceImpl implements TodoService {
         return todoRepository.findAllByUserId(id).stream().map(todo -> modelMapper.map(todo, TodoResponse.class)).collect(Collectors.toList());
     }
 
-    public Todo update(Todo updatedTodo) {
+    public TodoResponse update(Todo updatedTodo) {
         Optional<Todo> optionalTodo = todoRepository.findById(updatedTodo.getId());
         if (optionalTodo.isPresent()) {
             Todo existingTodo = optionalTodo.get();
@@ -36,7 +36,7 @@ public class TodoServiceImpl implements TodoService {
                 existingTodo.setStatus(updatedTodo.getStatus());
             }
 
-            return todoRepository.save(existingTodo);
+            return modelMapper.map(todoRepository.save(existingTodo), TodoResponse.class);
         } else {
             throw new NotFoundException("Todo", "id", updatedTodo.getId());
         }
