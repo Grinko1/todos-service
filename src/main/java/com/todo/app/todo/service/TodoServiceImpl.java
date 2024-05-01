@@ -4,11 +4,13 @@ import com.todo.app.exceptions.NotFoundException;
 import com.todo.app.todo.entities.Todo;
 import com.todo.app.todo.repository.TodoRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
+@Service
 public class TodoServiceImpl implements TodoService {
     private final TodoRepository todoRepository;
 

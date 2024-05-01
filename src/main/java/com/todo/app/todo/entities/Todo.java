@@ -18,7 +18,8 @@ public class Todo {
     @Enumerated(EnumType.STRING)
     @Column(nullable=false)
     private TodoStatus status;
-    @ManyToOne()
+    @ManyToOne
+    @JoinColumn(name="user_id", referencedColumnName = "id")
     @Column(name = "user_id",nullable=false)
     private Long userId;
 }
