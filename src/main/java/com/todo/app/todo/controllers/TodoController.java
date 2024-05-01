@@ -9,6 +9,7 @@ import com.todo.app.user.entity.User;
 import com.todo.app.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,6 +41,10 @@ public class TodoController {
         System.out.println(modelMapper.map(dto, Todo.class));
         System.out.println(dto);
     return ResponseEntity.ok(todoService.update(modelMapper.map(dto, Todo.class)));
+    }
+    @DeleteMapping("/{todoId}")
+    public HttpStatus deleteById(@PathVariable("todoId") Long todoId){
+        return HttpStatus.OK;
     }
 
 }
