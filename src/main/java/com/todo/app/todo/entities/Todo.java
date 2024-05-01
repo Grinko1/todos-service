@@ -1,5 +1,6 @@
 package com.todo.app.todo.entities;
 
+import com.todo.app.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@Table(name="todos")
 public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +22,5 @@ public class Todo {
     private TodoStatus status;
     @ManyToOne
     @JoinColumn(name="user_id", referencedColumnName = "id")
-    @Column(name = "user_id",nullable=false)
-    private Long userId;
+    private User user;
 }
