@@ -26,7 +26,7 @@ public class AuthenticationService {
      * @param request данные пользователя
      * @return токен
      */
-    public JwtSignUpResponse signUp(SignUpDto request) {
+    public JwtAuthResponse signUp(SignUpDto request) {
         System.out.println(request);
         try{
             var user = User.builder()
@@ -37,7 +37,7 @@ public class AuthenticationService {
             User userData = userService.create(user);
 
             var jwt = jwtService.generateToken(user);
-            return new JwtSignUpResponse(jwt, user.getId());
+            return new JwtAuthResponse(jwt, modelMapper.map(userData, UserInfoDto.class) );
         }catch (RuntimeException e){
             throw e;
         }
@@ -50,7 +50,7 @@ public class AuthenticationService {
      * @param request данные пользователя
      * @return токен
      */
-    public JwtSignInResponse signIn(SignInDto request) {
+    public JwtAuthResponse signIn(SignInDto request) {
         System.out.println("sign in");
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -70,7 +70,7 @@ public class AuthenticationService {
 
         System.out.println("profile " + userData);
         var jwt = jwtService.generateToken(user);
-        return new JwtSignInResponse(jwt, modelMapper.map(userData, UserInfoDto.class) );
+        return new JwtAuthResponse(jwt, modelMapper.map(userData, UserInfoDto.class) );
     }
 
 }

@@ -1,7 +1,7 @@
 package com.todo.app.user.controller;
 
 import com.todo.app.exceptions.AppError;
-import com.todo.app.user.dto.JwtSignInResponse;
+import com.todo.app.user.dto.JwtAuthResponse;
 import com.todo.app.user.dto.SignInDto;
 import com.todo.app.user.dto.SignUpDto;
 import com.todo.app.user.service.AuthenticationService;
@@ -44,11 +44,11 @@ public class AuthController {
     @PostMapping("/sign-in")
     public ResponseEntity<?> signIn(@RequestBody @Valid SignInDto request) {
         try {
-            JwtSignInResponse response = authenticationService.signIn(request);
+            JwtAuthResponse response = authenticationService.signIn(request);
             System.out.println(response);
             return ResponseEntity.ok(response);
         } catch (BadCredentialsException e) {
-            return new ResponseEntity<>(new AppError(HttpStatus.UNAUTHORIZED.value(), "Wrong username or password"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new AppError(HttpStatus.UNAUTHORIZED.value(), "Wrong email or password"), HttpStatus.UNAUTHORIZED);
         }
     }
     @PostMapping("/refresh-token")
