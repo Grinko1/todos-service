@@ -70,7 +70,7 @@ public class AuthenticationService {
 
         System.out.println("profile " + userData);
         var jwt = jwtService.generateToken(user);
-        return new JwtSignInResponse(jwt, modelMapper.map(userData, UserResponseDto.class) );
+        return new JwtSignInResponse(jwt, modelMapper.map(userData, UserInfoDto.class) );
     }
 
 }

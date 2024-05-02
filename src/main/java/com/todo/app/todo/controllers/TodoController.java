@@ -5,8 +5,6 @@ import com.todo.app.todo.dto.TodoResponse;
 import com.todo.app.todo.dto.UpdatedTodoDto;
 import com.todo.app.todo.entities.Todo;
 import com.todo.app.todo.service.TodoService;
-import com.todo.app.user.entity.User;
-import com.todo.app.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -16,14 +14,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/todos")
+@RequestMapping("/api/user/{userId}/todos")
 @AllArgsConstructor
 public class TodoController {
     private final TodoService todoService;
-    private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
-    @GetMapping("/{userId}")
+    @GetMapping
     public ResponseEntity<List<TodoResponse>> getAllTodos(@PathVariable("userId") Long userId){
         return  ResponseEntity.ok(todoService.findAllByUserId(userId));
     }
@@ -44,6 +41,7 @@ public class TodoController {
     }
     @DeleteMapping("/{todoId}")
     public HttpStatus deleteById(@PathVariable("todoId") Long todoId){
+        todoService.deleteById(todoId);
         return HttpStatus.OK;
     }
 

@@ -15,6 +15,6 @@ import lombok.NoArgsConstructor;
 public class JwtSignInResponse {
     @Schema(description = "Токен доступа", example = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTYyMjUwNj...")
     private String token;
-    private UserResponseDto user;
+    private UserInfoDto user;
 
 }

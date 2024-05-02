@@ -45,6 +45,7 @@ public class AuthController {
     public ResponseEntity<?> signIn(@RequestBody @Valid SignInDto request) {
         try {
             JwtSignInResponse response = authenticationService.signIn(request);
+            System.out.println(response);
             return ResponseEntity.ok(response);
         } catch (BadCredentialsException e) {
             return new ResponseEntity<>(new AppError(HttpStatus.UNAUTHORIZED.value(), "Wrong username or password"), HttpStatus.UNAUTHORIZED);
