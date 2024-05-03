@@ -4,7 +4,9 @@ import com.todo.app.exceptions.AppError;
 import com.todo.app.user.dto.JwtAuthResponse;
 import com.todo.app.user.dto.SignInDto;
 import com.todo.app.user.dto.SignUpDto;
+import com.todo.app.user.dto.UpdateProfileDto;
 import com.todo.app.user.service.AuthenticationService;
+import com.todo.app.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,10 +16,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -27,6 +26,7 @@ import java.io.IOException;
 @Tag(name = "Аутентификация")
 public class AuthController {
     private final AuthenticationService authenticationService;
+    private final UserService userService;
 
     @Operation(summary = "Регистрация пользователя")
     @PostMapping("/sign-up")
@@ -49,6 +49,15 @@ public class AuthController {
             return ResponseEntity.ok(response);
         } catch (BadCredentialsException e) {
             return new ResponseEntity<>(new AppError(HttpStatus.UNAUTHORIZED.value(), "Wrong email or password"), HttpStatus.UNAUTHORIZED);
+        }
+    }
+    @PatchMapping("/user/{userId}")
+    public ResponseEntity<?> updateUser(@RequestBody @Valid UpdateProfileDto dto, @PathVariable("userId") Long userId){
+        System.out.println(dto);
+        try{
+            return ResponseEntity.ok(userService.updateProfile(dto, userId));
+        }catch (RuntimeException e){
+            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Failed update profile data"), HttpStatus.BAD_REQUEST);
         }
     }
     @PostMapping("/refresh-token")
