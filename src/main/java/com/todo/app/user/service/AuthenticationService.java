@@ -66,6 +66,7 @@ public class AuthenticationService {
                 .userDetailsService()
                 .loadUserByUsername(request.getEmail());
 
+
         User userData = userService.getByEmail(request.getEmail());
 
         System.out.println("profile " + userData);

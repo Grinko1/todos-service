@@ -1,6 +1,8 @@
 package com.todo.app.user.service;
 
+import com.todo.app.config.jwt.JwtService;
 import com.todo.app.exceptions.NotFoundException;
+import com.todo.app.user.dto.JwtAuthResponse;
 import com.todo.app.user.dto.UpdateProfileDto;
 import com.todo.app.user.dto.UserInfoDto;
 import com.todo.app.user.dto.UserResponseDto;
@@ -19,6 +21,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final JwtService jwtService;
     private final ModelMapper modelMapper;
 
     private User save (User user){
@@ -35,7 +38,7 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
 
     }
-    public UserInfoDto updateProfile(UpdateProfileDto data, Long id){
+    public JwtAuthResponse updateProfile(UpdateProfileDto data, Long id){
         Optional<User> userOptional = userRepository.findById(id);
         if(userOptional.isPresent()){
             User existingUser = userOptional.get();
@@ -45,13 +48,13 @@ public class UserService {
             if(!existingUser.getEmail().equals(data.getEmail())){
                 existingUser.setEmail(data.getEmail());
             }
-            return modelMapper.map(userRepository.save(existingUser), UserInfoDto.class);
+            User user = userRepository.save(existingUser);
+            var jwt = jwtService.generateToken(user);
+            return new JwtAuthResponse(jwt, modelMapper.map(user, UserInfoDto.class)) ;
+
         }else{
             throw new NotFoundException("User", "Id", id);
         }
-
-
-
 
     }
     public UserDetailsService userDetailsService() {
